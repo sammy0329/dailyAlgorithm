@@ -26,43 +26,70 @@ import java.util.StringTokenizer;
 public class BJ_16927_배열돌리기2 {
     static int N, M, R;
     static int [][] arr;
+    // 시계 반대방향으로 전진 우하좌상
+    static int[] dr = {0,1,0,-1};
+    static int[] dc = {1,0,-1,0};
 
-    public static void rotate(int loc, int cnt){
-        int mod = (N - 2 * loc) + 2 * (M - 2 * loc - 2);
-        cnt %= mod;
+    static void rotate(int startPoint, int cnt) {
+        int rr = R % cnt;
+        for (int i = 0; i < rr; i++) {
 
-        for(int i=0; i<cnt; i++){
-            int start = arr[loc][loc];
-            for(int j=loc; j<M-loc-1; j++) arr[loc][j] = arr[loc][j+1];
-            for(int j=loc; j<N-loc-1; i++) arr[j][M-loc-1] = arr[j+1][M-loc-1];
-            for(int j=M-loc-2; j>=loc; j--) arr[N-loc-1][j+1] = arr[N-loc-1][j];
-            for(int j=N-loc-2; j>=loc; j--) arr[j+1][loc] = arr[j][loc];
-            arr[loc+1][loc]=start;
+            int start = arr[startPoint][startPoint];
+            int r = startPoint;
+            int c = startPoint;
+            int dir = 0;
+
+            while (dir < 4) {
+                int nr = r + dr[dir];
+                int nc = c + dc[dir];
+
+                if (nr == startPoint && nc == startPoint) break;
+                if (nr < N - startPoint && nc < M - startPoint && nr >= startPoint && nc >= startPoint) {
+                    arr[r][c] = arr[nr][nc];
+                    r = nr;
+                    c = nc;
+                } else {
+                    dir++;
+                }
+            }
+            // 빈자리에 초기값 넣어줌
+            arr[startPoint + 1][startPoint] = start;
         }
     }
+
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st = new StringTokenizer(br.readLine());
+        StringTokenizer st;
+        StringBuilder sb = new StringBuilder();
+
+        st = new StringTokenizer(br.readLine());
         N = Integer.parseInt(st.nextToken()); // 행
         M = Integer.parseInt(st.nextToken()); // 열
         R = Integer.parseInt(st.nextToken()); // 회전 수
-        arr = new int[N+1][M+1];
-        for(int r=1;r<=N;r++){
+        arr = new int[N][M];
+        for(int r=0;r<N;r++){
             st = new StringTokenizer(br.readLine());
-            for(int c=1; c<=M; c++){
+            for(int c=0; c<M; c++){
                 arr[r][c] = Integer.parseInt(st.nextToken());
             }
         }
 
-        for (int i = 0; i < Math.min(N, M) / 2; i++){
-            rotate(i,R);
+        // 박스 테두리 개수
+        int cnt = Math.min(N,M)/2;
+        int n=N, m=M;
+
+        for (int i = 0; i < cnt ; i++){
+            rotate(i,2*n + 2*m -4);
+            n-=2;
+            m-=2;
         }
 
         for(int i=0; i<N; i++){
             for(int j=0; j<M; j++){
-                System.out.print(arr[i][j]+" ");
+                sb.append(arr[i][j]).append(" ");
             }
-            System.out.println();
+            sb.append("\n");
         }
+        System.out.println(sb);
     }
 }
