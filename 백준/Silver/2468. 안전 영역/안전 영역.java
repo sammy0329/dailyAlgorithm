@@ -17,14 +17,14 @@ import java.util.StringTokenizer;
  * 문제해결 프로세스
  * 아이스크림 얼려먹기랑 비슷한 문제라 생각
  * 1. 입력 받은 값 중 최솟값, 최댓값을 구한다.
- * 2. min~max까지 물 잠기기를 진행하고 dfs로 찾는다.
+ * 2. 0~max까지 물 잠기기를 진행하고 dfs를 진행시켜, 방문 배열을 갱신하고, 갯수를 구한다.
  * 3. 한번 돌 때, result max 값으로 갱싢한다.
  *
  */
 public class Main {
 
     static int[][] arr;
-    static int N, MAX_NUMBER, MIN_NUMBER, result;
+    static int N, MAX_NUMBER, result;
     static boolean[][] isVisited;
     static int[] dx = {1, 0, -1, 0};
     static int[] dy = {0, -1, 0, 1};
@@ -36,14 +36,12 @@ public class Main {
         N = Integer.parseInt(br.readLine());
         arr = new int[N][N];
         MAX_NUMBER = Integer.MIN_VALUE;
-        MIN_NUMBER = Integer.MAX_VALUE;
 
         for (int i = 0; i < N; i++) {
             st = new StringTokenizer(br.readLine());
             for (int j = 0; j < N; j++) {
                 arr[i][j] = Integer.parseInt(st.nextToken());
                 MAX_NUMBER = Math.max(MAX_NUMBER, arr[i][j]);
-                MIN_NUMBER = Math.min(MIN_NUMBER, arr[i][j]);
             }
         }
 
@@ -53,9 +51,7 @@ public class Main {
 
             for (int i = 0; i < N; i++) {
                 for (int j = 0; j < N; j++) {
-                    if (isVisited[i][j] || arr[i][j] <= h) {
-                        continue;
-                    }
+                    if (isVisited[i][j] || arr[i][j] <= h) continue;
                     dfs(i, j, h);
                     cnt += 1;
                 }
@@ -71,11 +67,7 @@ public class Main {
         for (int d = 0; d < 4; d++) {
             int nx = x + dx[d];
             int ny = y + dy[d];
-
-            if (nx >= N || nx < 0 || ny >= N || ny < 0 || isVisited[nx][ny] || arr[nx][ny] <= h) {
-                continue;
-            }
-
+            if (nx >= N || nx < 0 || ny >= N || ny < 0 || isVisited[nx][ny] || arr[nx][ny] <= h) continue;
             dfs(nx, ny, h);
         }
     }
