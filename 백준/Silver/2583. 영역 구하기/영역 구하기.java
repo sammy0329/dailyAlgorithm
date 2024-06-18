@@ -21,14 +21,14 @@ public class Main {
     static int M,N,K,cnt;
     static int[][] arr;
     static List<Integer> result = new ArrayList<>();
-    static int[] dx = {1, 0, -1, 0};
-    static int[] dy = {0, -1, 0, 1};
+    static int[] dr = {1, 0, -1, 0};
+    static int[] dc = {0, -1, 0, 1};
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
         StringBuilder sb = new StringBuilder();
-        
+
         M = Integer.parseInt(st.nextToken());
         N = Integer.parseInt(st.nextToken());
         K = Integer.parseInt(st.nextToken());
@@ -69,8 +69,8 @@ public class Main {
         arr[r][c] = 1;
 
         for (int d = 0; d < 4; d++) {
-            int nr = r + dx[d];
-            int nc = c + dy[d];
+            int nr = r + dr[d];
+            int nc = c + dc[d];
             if (nr >= M || nr < 0 || nc >= N || nc < 0 || arr[nr][nc]==1) continue;
             cnt++;
             dfs(nr, nc);
