@@ -1,0 +1,16 @@
+-- 임시 테이블 생성 (시간대를 0~23까지 생성)
+WITH RECURSIVE hours AS (
+    SELECT 0 AS HOUR
+    UNION ALL
+    SELECT HOUR + 1
+    FROM hours
+    WHERE HOUR < 23
+)
+
+-- 시간대별 COUNT를 포함하는 결과 쿼리
+SELECT h.HOUR, 
+       COALESCE(COUNT(a.DATETIME), 0) AS COUNT
+FROM hours h
+LEFT JOIN ANIMAL_OUTS a ON HOUR(a.DATETIME) = h.HOUR
+GROUP BY h.HOUR
+ORDER BY h.HOUR;
