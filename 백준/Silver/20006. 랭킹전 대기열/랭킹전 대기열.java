@@ -65,12 +65,12 @@ public class Main {
         void printPlayers() {
             Collections.sort(playerList);
             if (currentPlayersCnt == m) {
-                System.out.println("Started!");
+                sb.append("Started!").append("\n");
             } else {
-                System.out.println("Waiting!");
+                sb.append("Waiting!").append("\n");
             }
             for (Player player : playerList) {
-                System.out.println(player.level + " " + player.nickname);
+                sb.append(player.level).append(" ").append(player.nickname).append("\n");
             }
         }
 
@@ -78,6 +78,7 @@ public class Main {
 
     static int m;
     static int p;
+    static StringBuilder sb = new StringBuilder();
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -115,5 +116,6 @@ public class Main {
         for (int i = 0; i < roomList.size(); i++) {
             roomList.get(i).printPlayers();
         }
+        System.out.println(sb);
     }
 }
