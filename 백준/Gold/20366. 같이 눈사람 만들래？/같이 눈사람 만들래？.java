@@ -38,16 +38,6 @@ public class Main {
                 int end = j - 1;
 
                 while (start < end) {
-                    if (start == i || start == j) {
-                        start++;
-                        continue;
-                    }
-
-                    if (end == i || end == j) {
-                        end--;
-                        continue;
-                    }
-
                     int snowman2 = diameters[start] + diameters[end];
                     result = Math.min(result, Math.abs(snowman1 - snowman2));
 
@@ -56,7 +46,8 @@ public class Main {
                     } else if (snowman1 < snowman2) {
                         end--;
                     } else if (snowman1 == snowman2) {
-                        break;
+                        System.out.println(0);
+                        return;
                     }
                 }
 
