@@ -4,10 +4,12 @@ import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.StringTokenizer;
 
+//@formatter:off
 /**
- * 600*599*598*597 = 10억 넘음 
- * 완전 탐색으로 눈사람 하나를 만들고, 투포인터를 활용해 눈사람2를 결정하기
+ * 600*599*598*597 = 10억 넘음
+ * 완전 탐색으로 눈사람 하나를 만들고, 투포인터를 활용해 눈사람2를 결정한다.
  */
+//@formatter:on
 public class Main {
 
     static int n, result;
@@ -28,12 +30,12 @@ public class Main {
 
         Arrays.sort(diameters);
 
-        for (int i = 0; i < n; i++) {
+        for (int i = 0; i < n - 3; i++) {
             for (int j = i + 1; j < n; j++) {
                 int snowman1 = diameters[i] + diameters[j];
 
-                int start = 0;
-                int end = n - 1;
+                int start = i + 1;
+                int end = j - 1;
 
                 while (start < end) {
                     if (start == i || start == j) {
