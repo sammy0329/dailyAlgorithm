@@ -1,55 +1,52 @@
 import java.util.*;
 
 class Solution {
-    
     public int solution(String begin, String target, String[] words) {
-        int answer = 0;
-        int length = words.length;
-        
-        Queue<String> q = new ArrayDeque<>();
-        boolean[] isVisited = new boolean[length];
-                
-        for(int i=0; i<length; i++){
-            if(words[i].equals(begin)){
-                isVisited[i] = true;
+        boolean exists = false;
+        for (String w : words) {
+            if (w.equals(target)) {
+                exists = true;
+                break;
             }
         }
-        
+        if (!exists) return 0;
+
+        Queue<String> q = new ArrayDeque<>();
+        Set<String> visited = new HashSet<>();
+
         q.offer(begin);
-        int qSize = 0;
-        
-        while(!q.isEmpty()){
-            qSize = q.size();
-            
-            for(int k=0; k<qSize; k++){
-                String current = q.poll();
-                if(current.equals(target)){
-                    return answer;
-                }
-                A: for(int i=0; i<length; i++){
-                    if(isVisited[i]){
-                        continue;
-                    }
+        visited.add(begin);
 
-                    int checkCnt=0;
+        int depth = 0;
 
-                    for(int j=0; j<current.length(); j++){
-                        if(current.charAt(j)!=words[i].charAt(j)){
-                            if(checkCnt == 1){
-                                continue A;
-                            }
-                            checkCnt++;
-                        }    
-                    }
+        while (!q.isEmpty()) {
+            int cnt = q.size();
 
-                    if(checkCnt==1){
-                        q.offer(words[i]);
-                        isVisited[i] = true;
-                    }
+            for (int i = 0; i < cnt; i++) {
+                String cur = q.poll();
+                if (cur.equals(target)) return depth;
+
+                for (String next : words) {
+                    if (visited.contains(next)) continue;
+                    if (!diffOne(cur, next)) continue;
+
+                    visited.add(next);
+                    q.offer(next);
                 }
             }
-            answer++;
-            }     
+            depth++;
+        }
         return 0;
+    }
+
+    private boolean diffOne(String a, String b) {
+        int diff = 0;
+        for (int i = 0; i < a.length(); i++) {
+            if (a.charAt(i) != b.charAt(i)) {
+                diff++;
+                if (diff > 1) return false;
+            }
+        }
+        return diff == 1;
     }
 }
