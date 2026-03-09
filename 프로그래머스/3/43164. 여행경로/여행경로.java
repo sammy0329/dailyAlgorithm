@@ -1,44 +1,39 @@
 import java.util.*;
 
 class Solution {
-    
-    boolean[] isVisited;
-    int targetCnt;
+    boolean[] visited;
     String[] answer;
-    List<String> path = new ArrayList<>();
-    
-    public boolean dfs(String[][] tickets, int cnt) {
-        if (cnt == targetCnt) {
-            answer = path.toArray(new String[0]);
-            return true; // 경로를 찾았으므로 true 반환
+    boolean found = false;
+
+    public String[] solution(String[][] tickets) {
+        Arrays.sort(tickets, (a,b) -> {
+            if (!a[0].equals(b[0])) return a[0].compareTo(b[0]);
+            return a[1].compareTo(b[1]);
+        });
+
+        visited = new boolean[tickets.length];
+        answer = new String[tickets.length + 1];
+        answer[0] = "ICN";
+
+        dfs(tickets, "ICN", 0);
+
+        return answer;
+    }
+
+    private void dfs(String[][] tickets, String now, int depth) {
+        if (depth == tickets.length) {
+            found = true;
+            return;
         }
-        
+
         for (int i = 0; i < tickets.length; i++) {
-            if (!isVisited[i] && path.get(cnt - 1).equals(tickets[i][0])){
-                isVisited[i] = true;
-                path.add(tickets[i][1]);
-                
-                if (dfs(tickets, cnt + 1)) {
-                    return true; // 경로를 찾은 경우 종료
-                }
-                
-                path.remove(path.size() - 1); // 백트래킹
-                isVisited[i] = false;
+            if (!visited[i] && tickets[i][0].equals(now)) {
+                visited[i] = true;
+                answer[depth + 1] = tickets[i][1];
+                dfs(tickets, tickets[i][1], depth + 1);
+                if (found) return;
+                visited[i] = false;
             }
         }
-        return false;
-    }
-    
-    public String[] solution(String[][] tickets) {
-        targetCnt = tickets.length + 1;
-        isVisited = new boolean[tickets.length];
-        
-        // 티켓을 도착지 기준으로 오름차순 정렬
-        Arrays.sort(tickets, (o1, o2) -> o1[1].compareTo(o2[1]));
-        
-        path.add("ICN"); // 인천부터 시작
-        dfs(tickets, 1);
-        
-        return answer;
     }
 }
